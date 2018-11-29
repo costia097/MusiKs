@@ -15,7 +15,7 @@ import {Component} from '@angular/core';
               <input class="form-control element-pixel-height-25"/>
             </div>
             <div class="element-alignment-center margin-left-10">
-              <button>Search</button>
+              <button class="btn">Search</button>
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@ import {Component} from '@angular/core';
         </div>
         <div class="flex-container-main-row element-width-15 container-alignment-right">
           <div class="element-alignment-center">
-            <button>Button</button>
+            <button class="btn">Button</button>
           </div>
         </div>
       </div>
