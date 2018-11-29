@@ -4,68 +4,77 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
   selector: 'app-music-player',
   styleUrls: ['./app.music.player.component.css'],
   template: `
-
-    <audio #audioPlayer (timeupdate)="timeUpdate()">
-      <source src="{{currentTrackSource}}">
-    </audio>
-
-    <div class="flex-container-main" style="padding-top: 56%">
-      <div class="progress progress-bar-element flex-component" (click)="changeProgress($event)" style="height: 15px; width: 100%">
-        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" #progressBar
-             [ngStyle]="{'width':currentProgressInPercents +'%'}"></div>
-      </div>
-    </div>
-    <div class="flex-container-main" style="padding-top: 15px">
-      <div class="flex-component">
-        <button class="btn" (click)="backward()">
-          <i class="fa fa-fast-backward"></i>
-        </button>
-      </div>
-      <div class="flex-component">
-        <button class="btn play-btn-wrapper" (click)="play()">
-          <i class="fa" [ngClass]="{ 'fa-play': !isPlaying, 'fa-pause' : isPlaying}"></i>
-        </button>
-      </div>
-      <div class="flex-component">
-        <button class="btn" (click)="forward()">
-          <i class="fa fa-fast-forward"></i>
-        </button>
-      </div>
-      <div class="flex-component" (click)="showTrackList()">
-        <button >Show track list</button>
-      </div>
-      <div class="flex-component">
-        NEY
-      </div>
-      <div class="flex-component">
-        NEY
-      </div>
-      <div class="flex-component">
-        NEY
-      </div>
-      <div class="flex-component" style="width: 65%">
-        <div>
-          {{currentTime}}/{{compositionTime}} sec
-        </div>
-        <div>
-          {{currentTrackSource}}
-        </div>
-      </div>
-      <div class="flex-component" style="width: 30%">
-        <div class="flex-container-main">
-          <input type="range" min="1" max="100" value="50" class="slider" (input)="changeVolume()" #volumeChanger>
-          <div style="margin-top: 2px; margin-left: 25px">
-            <i class="fa fa-volume-down volume-wrapper"></i>
+    
+    <section class="flex-section-wrapper">
+      
+      <audio #audioPlayer (timeupdate)="timeUpdate()">
+        <source src="{{currentTrackSource}}">
+      </audio>
+      <div class="flex-container-main-row">
+        <div class="flex-element-with-border-and-width element-width-full pointer">
+          <div class="progress margin-bottom-auto element-pixel-height-8" (click)="changeProgress($event)">
+          <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" #progressBar [ngStyle]="{'width':currentProgressInPercents +'%'}"></div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <div *ngIf="isShowTrackList" class="flex-container-main" style="flex-direction: column">
-      <div *ngFor="let track of listOfTracks">
-        {{track}}
+      
+      <div class="flex-container-main-row element-pixel-height-45">
+        <div class="flex-element-with-border element-alignment-center">
+          <button class="btn" (click)="backward()">
+          <i class="fa fa-fast-backward"></i>
+          </button>
+        </div>
+        <div class="flex-element-with-border element-alignment-center">
+          <button class="btn play-btn-wrapper" (click)="play()">
+          <i class="fa" [ngClass]="{ 'fa-play': !isPlaying, 'fa-pause' : isPlaying}"></i>
+          </button>
+        </div>
+        <div class="flex-element-with-border element-alignment-center">
+          <button class="btn" (click)="forward()">
+          <i class="fa fa-fast-forward"></i>
+          </button>
+        </div>
+        <div class="flex-element-with-border element-alignment-center">
+          <button class="btn" (click)="showTrackList()" >Show track list</button>
+        </div>
+        <div class="flex-element-with-border-and-width element-alignment-center text-center">
+          <div class="flex-container-main-row">
+            <div class="flex-element-with-border element-width-50 element-alignment-center">
+              {{currentTime}}/{{compositionTime}} sec
+            </div>
+            <div class="flex-element-with-border element-width-50">
+              <button class="btn" (click)="changeAutoPlayValue()" [ngStyle]="{'background' : isAutoPlay == true ? '#0080004a' : '#ff000054'}">AutoPlay</button>
+            </div>
+          </div>
+        </div>
+        <div class="flex-element-with-border-and-width element-alignment-center text-center">
+          <div class="flex-element-with-border">
+          {{currentTrackSource}}
+          </div>
+        </div>
+        <div class="flex-element-with-border-and-width element-alignment-center text-center">
+          <div class="flex-element-with-border">
+            img
+          </div>
+        </div>
+        <div class="flex-element-with-border-and-width element-alignment-center">
+          <div class="flex-container-main-row container-alignment-center">
+            <div class="flex-element-with-border">
+              <input type="range" min="1" max="100" value="50" class="margin-top-9 my-progress-bar" (input)="changeVolume()" #volumeChanger>
+            </div>
+            <div class="flex-element-with-border margin-left-10 font-size-20">
+              <i class="fa fa-volume-down volume-wrapper"></i>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div *ngIf="isShowTrackList" class="flex-container-main-column">
+        <div *ngFor="let track of listOfTracks" class="flex-element-with-border">
+          {{track}}
+        </div>
+      </div>
+    </section>
   `,
 })
 export class AppMusicPlayerComponent implements OnInit{
@@ -77,28 +86,26 @@ export class AppMusicPlayerComponent implements OnInit{
 
   @ViewChild('volumeChanger')
   volumeChanger: ElementRef;
-
-  isDebug: boolean;
   isPlaying: boolean;
   currentProgressInPercents: number;
   compositionTime: number;
   currentTime: number;
-
   currentTrackSource: string;
   currentIndexOfTrackInArray: number;
   currentIndexOfTrack: number;
-
   isShowTrackList: boolean;
+  isAutoPlay: boolean;
+  isTrackFinished: boolean;
 
   @Input()
   listOfTracks: Array<string>;
 
 
   ngOnInit(): void {
-
     this.currentTrackSource = this.listOfTracks[0];
     this.currentIndexOfTrackInArray = 0;
     this.currentIndexOfTrack = 1;
+    this.audioPlayerRef.nativeElement.autoplay = false;
   }
 
   play() {
@@ -141,33 +148,42 @@ export class AppMusicPlayerComponent implements OnInit{
     } else {
       this.audioPlayerRef.nativeElement.volume = newVolumeValue;
     }
-    if (this.isDebug) {
-      console.log('Change volume: ' + newVolumeValue);
-    }
   }
 
   changeProgress(event: any) {
     let maxWidth = window.innerWidth;
     let newProgressBarValueInPercentages = 100 / maxWidth * event.offsetX;
     this.currentProgressInPercents = newProgressBarValueInPercentages;
-    let newTime = this.audioPlayerRef.nativeElement.duration * newProgressBarValueInPercentages * 0.01;
-    this.audioPlayerRef.nativeElement.currentTime = newTime;
-    if (this.isDebug) {
-      console.log('NewTIme is: ' + newTime + ' duration is: ' + this.audioPlayerRef.nativeElement.duration);
-      console.log('offsetX: ' + event.offsetX + 'newProgressBarValueInPercentages: ' + newProgressBarValueInPercentages);
-    }
+    this.audioPlayerRef.nativeElement.currentTime = this.audioPlayerRef.nativeElement.duration * newProgressBarValueInPercentages * 0.01;
   }
 
   timeUpdate() {
-    if (this.isDebug) {
-      console.log('Time update ' + 'current time is: ' + this.audioPlayerRef.nativeElement.currentTime + ' durations is: ' + this.audioPlayerRef.nativeElement.duration);
-      console.log('Current progress is: ' + this.currentProgressInPercents);
-    }
     this.currentTime = Math.round(this.audioPlayerRef.nativeElement.currentTime);
     this.currentProgressInPercents = (100 / this.audioPlayerRef.nativeElement.duration * this.audioPlayerRef.nativeElement.currentTime);
+    if (this.currentTime > this.compositionTime && !this.isTrackFinished && this.isAutoPlay) {
+      this.isTrackFinished = true;
+      this.switchToNextTrackWithDelay();
+    }
   }
 
   showTrackList(){
     this.isShowTrackList = !this.isShowTrackList;
+  }
+
+  changeAutoPlayValue() {
+    this.isAutoPlay = !this.isAutoPlay;
+    this.audioPlayerRef.nativeElement.autoplay = this.isAutoPlay;
+  }
+
+  switchToNextTrackWithDelay() {
+    this.delay(2500)
+      .then(value => {
+        this.forward();
+        this.isTrackFinished = false;
+      });
+  }
+
+  async delay(delay: number) {
+    return new Promise(resolve => setTimeout(resolve, delay));
   }
 }
