@@ -1,55 +1,57 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-music-player',
   styleUrls: ['./app.music.player.component.css'],
   template: `
-    
+
     <section class="flex-section-wrapper">
-      
+
       <audio #audioPlayer (timeupdate)="timeUpdate()">
-        <source src="{{currentTrackSource}}">
+        <source [src]="currentTrackSource">
       </audio>
       <div class="flex-container-main-row">
         <div class="flex-element-with-border-and-width element-width-full pointer">
           <div class="progress margin-bottom-auto element-pixel-height-8" (click)="changeProgress($event)">
-          <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" #progressBar [ngStyle]="{'width':currentProgressInPercents +'%'}"></div>
+            <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" #progressBar
+                 [ngStyle]="{'width':currentProgressInPercents +'%'}"></div>
           </div>
         </div>
       </div>
-      
-      <div class="flex-container-main-row element-pixel-height-45">
+
+      <div class="flex-container-main-row element-pixel-height-45" #audioWrapper>
         <div class="flex-element-with-border element-alignment-center">
           <button class="btn" (click)="backward()">
-          <i class="fa fa-fast-backward"></i>
+            <i class="fa fa-fast-backward"></i>
           </button>
         </div>
         <div class="flex-element-with-border element-alignment-center">
-          <button class="btn play-btn-wrapper" (click)="play()">
-          <i class="fa" [ngClass]="{ 'fa-play': !isPlaying, 'fa-pause' : isPlaying}"></i>
+          <button class="btn play-btn-wrapper" (click)="playOrPause()">
+            <i class="fa" [ngClass]="{ 'fa-play': !isPlaying, 'fa-pause' : isPlaying}" (window:keydown.space)="globalWindowKeyPress()"></i>
           </button>
         </div>
         <div class="flex-element-with-border element-alignment-center">
           <button class="btn" (click)="forward()">
-          <i class="fa fa-fast-forward"></i>
+            <i class="fa fa-fast-forward"></i>
           </button>
         </div>
         <div class="flex-element-with-border element-alignment-center">
-          <button class="btn" (click)="showTrackList()" >Show track list</button>
+          <button class="btn" (click)="showTrackList()">Show track list</button>
         </div>
         <div class="flex-element-with-border-and-width element-alignment-center text-center">
           <div class="flex-container-main-row">
             <div class="flex-element-with-border element-width-50 element-alignment-center">
               {{currentTime}}/{{compositionTime}} sec
             </div>
-            <div class="flex-element-with-border element-width-50">
-              <button class="btn" (click)="changeAutoPlayValue()" [ngStyle]="{'background' : isAutoPlay == true ? '#0080004a' : '#ff000054'}">AutoPlay</button>
+            <div class="flex-element-with-border element-width-40">
+              <button (click)="changeAutoPlayValue()" [ngStyle]="{'background' : isAutoPlay == true ? '#0080004a' : '#ff000054'}">AutoPlay
+              </button>
             </div>
           </div>
         </div>
         <div class="flex-element-with-border-and-width element-alignment-center text-center">
           <div class="flex-element-with-border">
-          {{currentTrackSource}}
+            {{currentTrackSource}}
           </div>
         </div>
         <div class="flex-element-with-border-and-width element-alignment-center text-center">
@@ -60,7 +62,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
         <div class="flex-element-with-border-and-width element-alignment-center">
           <div class="flex-container-main-row container-alignment-center">
             <div class="flex-element-with-border">
-              <input type="range" min="1" max="100" value="50" class="margin-top-9 my-progress-bar" (input)="changeVolume()" #volumeChanger>
+              <input type="range" min="1" max="100" value="3" class="margin-top-9 my-progress-bar" (input)="changeVolume()" #volumeChanger>
             </div>
             <div class="flex-element-with-border margin-left-10 font-size-20">
               <i class="fa fa-volume-down volume-wrapper"></i>
@@ -70,14 +72,22 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
       </div>
 
       <div *ngIf="isShowTrackList" class="flex-container-main-column">
-        <div *ngFor="let track of listOfTracks" class="flex-element-with-border">
-          {{track}}
+        <div *ngFor="let track of listOfTracks; let i = index" class="flex-element-with-border">
+          <div class="flex-container-main-row">
+            <div class="flex-element-with-border-and-width">
+              {{track}}
+            </div>
+            <div class="flex-element-with-border-and-width" *ngIf="i==currentIndexOfTrackInArray"
+                 [ngStyle]="{'background': isPlaying == true ? '#00800054': '#ff000061'}">
+              CURRENT
+            </div>
+          </div>
         </div>
       </div>
     </section>
   `,
 })
-export class AppMusicPlayerComponent implements OnInit{
+export class AppMusicPlayerComponent implements AfterContentInit, OnInit{
   @ViewChild('audioPlayer')
   audioPlayerRef: ElementRef;
 
@@ -86,6 +96,10 @@ export class AppMusicPlayerComponent implements OnInit{
 
   @ViewChild('volumeChanger')
   volumeChanger: ElementRef;
+
+  @ViewChild('audioWrapper')
+  audioWrapper: ElementRef;
+
   isPlaying: boolean;
   currentProgressInPercents: number;
   compositionTime: number;
@@ -100,6 +114,8 @@ export class AppMusicPlayerComponent implements OnInit{
   @Input()
   listOfTracks: Array<string>;
 
+  @Output()
+  audioPlayerExpose = new EventEmitter<AppMusicPlayerComponent>();
 
   ngOnInit(): void {
     this.currentTrackSource = this.listOfTracks[0];
@@ -108,7 +124,9 @@ export class AppMusicPlayerComponent implements OnInit{
     this.audioPlayerRef.nativeElement.autoplay = false;
   }
 
-  play() {
+  playOrPause() {
+    console.log('currentTrackSource: ' + this.currentTrackSource);
+    this.currentTrackSource = this.listOfTracks[0];
     if (this.compositionTime == null) {
       this.compositionTime = Math.round(this.audioPlayerRef.nativeElement.duration)
     }
@@ -119,6 +137,14 @@ export class AppMusicPlayerComponent implements OnInit{
       this.audioPlayerRef.nativeElement.pause();
     }
     this.audioPlayerRef.nativeElement.autoplay = false;
+  }
+
+  playCurrentTrack(source: string) {
+    this.currentTrackSource = source;
+    this.audioPlayerRef.nativeElement.load();
+    this.audioPlayerRef.nativeElement.play();
+    this.audioPlayerRef.nativeElement.autoplay = false;
+    this.isPlaying = true;
   }
 
   forward() {
@@ -151,7 +177,7 @@ export class AppMusicPlayerComponent implements OnInit{
   }
 
   changeProgress(event: any) {
-    let maxWidth = window.innerWidth;
+    let maxWidth = this.audioWrapper.nativeElement.offsetWidth;
     let newProgressBarValueInPercentages = 100 / maxWidth * event.offsetX;
     this.currentProgressInPercents = newProgressBarValueInPercentages;
     this.audioPlayerRef.nativeElement.currentTime = this.audioPlayerRef.nativeElement.duration * newProgressBarValueInPercentages * 0.01;
@@ -177,13 +203,26 @@ export class AppMusicPlayerComponent implements OnInit{
 
   switchToNextTrackWithDelay() {
     this.delay(2500)
-      .then(value => {
+      .then(() => {
         this.forward();
         this.isTrackFinished = false;
       });
   }
 
+  exportAudioPlayerRef() {
+    console.log('exportAudioComponent');
+    this.audioPlayerExpose.emit(this);
+  }
+
   async delay(delay: number) {
     return new Promise(resolve => setTimeout(resolve, delay));
+  }
+
+  globalWindowKeyPress() {
+    this.playOrPause();
+  }
+
+  ngAfterContentInit(): void {
+    this.exportAudioPlayerRef();
   }
 }

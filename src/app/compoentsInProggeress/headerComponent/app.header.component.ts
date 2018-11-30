@@ -38,7 +38,7 @@ import {Component} from '@angular/core';
         </div>
         <div class="flex-container-main-row element-width-15 container-alignment-right">
           <div class="element-alignment-center">
-            <button class="btn">Button</button>
+            <button class="btn">Login</button>
           </div>
         </div>
       </div>

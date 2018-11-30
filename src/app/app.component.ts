@@ -5,6 +5,8 @@ import {Component, ViewEncapsulation} from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   template: `    
     
+    <app-main-layout></app-main-layout>
+    
   `,
   styleUrls: ['./app.component.css']
 })
