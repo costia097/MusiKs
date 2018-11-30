@@ -33,11 +33,4 @@ export class AppMainLayout{
       console.log('BAD');
     }
   }
-
-  onValueSelected(value: string) {
-    let dublicate = this.musicTracks.find(value1 => value1 == value);
-    if (dublicate == null) {
-      this.musicTracks[0] = value;
-    }
-  }
 }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AppMusicPlayerComponent} from '../music.player.component/app.music.player.component';
 
 @Component({

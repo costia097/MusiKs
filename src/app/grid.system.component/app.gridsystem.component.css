@@ -1,4 +1,12 @@
 /*
+Position
+ */
+
+.element-position-fixed {
+  position: fixed;
+}
+
+/*
 Text
  */
 
@@ -8,6 +16,10 @@ Text
 
 .pointer {
   cursor: pointer;
+}
+
+.element-min-height-full {
+  min-height: 100vh;
 }
 
 /*
@@ -414,4 +426,29 @@ Height
 
 .element-height-full {
   height: 100%;
+}
+
+.element-bottom-zero{
+  bottom: 0;
+}
+
+
+/*
+Z-index
+ */
+
+.element-z-index-10{
+  z-index: 10;
+}
+
+/*
+Border-radius
+ */
+
+.element-border-radius-20-per{
+  border-radius: 20%;
+}
+
+.element-border-radius-50-per{
+  border-radius: 50%;
 }
