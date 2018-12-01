@@ -1,11 +1,12 @@
-import {Component, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AppMusicPlayerComponent} from '../music.player.component/app.music.player.component';
+import {AppMusicPlayerSharedService} from '../music.player.component/app.music.player.shared.service';
 
 @Component({
   selector: 'app-main-content',
   styleUrls: ['app.main.content.component.css'],
-  template: `    
-    
+  template: `
+
     <section>
       <div class="flex-container-main-column">
         <div class="flex-element-with-border">
@@ -26,11 +27,13 @@ import {AppMusicPlayerComponent} from '../music.player.component/app.music.playe
         </div>
       </div>
     </section>
-    
   `
 })
-export class AppMainContentComponent {
-  @Input()
+export class AppMainContentComponent implements OnInit {
+
+  constructor(private appMusicPlayerSharedService: AppMusicPlayerSharedService) {
+  }
+
   appMusicComponent: AppMusicPlayerComponent;
   isPlaying: boolean;
 
@@ -41,5 +44,9 @@ export class AppMainContentComponent {
     }
     this.appMusicComponent.playCurrentTrack(value);
     this.isPlaying = !this.isPlaying;
+  }
+
+  ngOnInit(): void {
+    this.appMusicComponent = this.appMusicPlayerSharedService.AppMusicPlayerComponent;
   }
 }

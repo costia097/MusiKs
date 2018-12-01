@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -38,7 +39,7 @@ import {Component} from '@angular/core';
         </div>
         <div class="flex-container-main-row element-width-15 container-alignment-right">
           <div class="element-alignment-center">
-            <button class="btn">Login</button>
+            <button class="btn" (click)="navigateToLogin()">Login</button>
           </div>
         </div>
       </div>
@@ -47,5 +48,10 @@ import {Component} from '@angular/core';
   styleUrls: ['app.header.component.css']
 })
 export class AppHeaderComponent {
+  constructor(private router: Router) {
+  }
 
+  navigateToLogin() {
+    this.router.navigate(['/login'])
+  }
 }

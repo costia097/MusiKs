@@ -1,4 +1,5 @@
-import {AfterContentInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AppMusicPlayerSharedService} from './app.music.player.shared.service';
 
 @Component({
   selector: 'app-music-player',
@@ -87,7 +88,11 @@ import {AfterContentInit, Component, ElementRef, EventEmitter, Input, OnInit, Ou
     </section>
   `,
 })
-export class AppMusicPlayerComponent implements AfterContentInit, OnInit{
+export class AppMusicPlayerComponent implements OnInit {
+
+  constructor(private appMusicPlayerSharedService: AppMusicPlayerSharedService) {
+  }
+
   @ViewChild('audioPlayer')
   audioPlayerRef: ElementRef;
 
@@ -114,21 +119,19 @@ export class AppMusicPlayerComponent implements AfterContentInit, OnInit{
   @Input()
   listOfTracks: Array<string>;
 
-  @Output()
-  audioPlayerExpose = new EventEmitter<AppMusicPlayerComponent>();
-
   ngOnInit(): void {
     this.currentTrackSource = this.listOfTracks[0];
     this.currentIndexOfTrackInArray = 0;
     this.currentIndexOfTrack = 1;
     this.audioPlayerRef.nativeElement.autoplay = false;
+    this.appMusicPlayerSharedService.AppMusicPlayerComponent = this;
   }
 
   playOrPause() {
     console.log('currentTrackSource: ' + this.currentTrackSource);
     this.currentTrackSource = this.listOfTracks[0];
     if (this.compositionTime == null) {
-      this.compositionTime = Math.round(this.audioPlayerRef.nativeElement.duration)
+      this.compositionTime = Math.round(this.audioPlayerRef.nativeElement.duration);
     }
     this.isPlaying = !this.isPlaying;
     if (this.isPlaying) {
@@ -192,7 +195,7 @@ export class AppMusicPlayerComponent implements AfterContentInit, OnInit{
     }
   }
 
-  showTrackList(){
+  showTrackList() {
     this.isShowTrackList = !this.isShowTrackList;
   }
 
@@ -209,20 +212,11 @@ export class AppMusicPlayerComponent implements AfterContentInit, OnInit{
       });
   }
 
-  exportAudioPlayerRef() {
-    console.log('exportAudioComponent');
-    this.audioPlayerExpose.emit(this);
-  }
-
   async delay(delay: number) {
     return new Promise(resolve => setTimeout(resolve, delay));
   }
 
   globalWindowKeyPress() {
     this.playOrPause();
-  }
-
-  ngAfterContentInit(): void {
-    this.exportAudioPlayerRef();
   }
 }

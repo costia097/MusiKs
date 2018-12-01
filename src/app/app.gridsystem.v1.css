@@ -452,3 +452,11 @@ Border-radius
 .element-border-radius-50-per{
   border-radius: 50%;
 }
+
+/*
+Shadows
+ */
+
+.element-shadow-down {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);;
+}

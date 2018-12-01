@@ -12,25 +12,17 @@ import {Component} from '@angular/core';
         </div>
         <div class="flex-element-with-border margin-top-5 margin-bottom-5">
           <div class="element-height-full">
-            <app-main-content [appMusicComponent]="appMusicComponent"></app-main-content>
+            <router-outlet></router-outlet>
           </div>
         </div>
         <div class="element-position-fixed element-bottom-zero element-width-75">
-          <app-music-player (audioPlayerExpose)="initAudioPlayer($event)"  [listOfTracks]="musicTracks"></app-music-player>
+          <app-music-player  [listOfTracks]="musicTracks"></app-music-player>
         </div>
       </div>
     </div>
 
   `
 })
-export class AppMainLayout{
+export class AppMainLayout {
   musicTracks: Array<string> = ['assets/mission.mp3'];
-  appMusicComponent: any = {};
-
-  initAudioPlayer(audioRef: any) {
-    this.appMusicComponent = audioRef;
-    if (this.appMusicComponent == null) {
-      console.log('BAD');
-    }
-  }
 }

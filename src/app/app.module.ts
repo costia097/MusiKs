@@ -9,7 +9,12 @@ import {AppMainLayout} from './main.layout.component/app.main.layout';
 import {AppMainContentComponent} from './main.content.compoent/app.main.content.component';
 import {AppRoutingModule} from './app.routing.module';
 import {TrackInfoComponent} from './track.info.component/track.info.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AppIntroComponent} from './intro.component/app.intro.component';
+import {AppLoginComponent} from './login.component/app.login.component';
+import {AppPreloaderComponent} from './preloader.component/app.preloader.component';
+import {AppMusicPlayerSharedService} from './music.player.component/app.music.player.shared.service';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,12 +24,15 @@ import {FormsModule} from '@angular/forms';
     AppHeaderComponent,
     AppMainLayout,
     AppMainContentComponent,
-    TrackInfoComponent
+    TrackInfoComponent,
+    AppIntroComponent,
+    AppLoginComponent,
+    AppPreloaderComponent
   ],
   imports: [
-    BrowserModule,FormsModule,AppRoutingModule
+    BrowserModule, FormsModule, AppRoutingModule, ReactiveFormsModule, HttpClientModule
   ],
-  providers: [],
+  providers: [AppMusicPlayerSharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
