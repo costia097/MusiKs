@@ -1,6 +1,6 @@
 import {RouterModule} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {AppMainContentComponent} from './main.content.compoent/app.main.content.component';
+import {AppMainContentComponent} from './main.content.component/app.main.content.component';
 import {AppLoginComponent} from './login.component/app.login.component';
 
 @NgModule({

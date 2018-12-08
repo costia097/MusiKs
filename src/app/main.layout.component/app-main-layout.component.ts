@@ -2,13 +2,13 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-main-layout',
-  styleUrls: ['app.main.layout.css'],
+  styleUrls: ['app-main-layout.component.css'],
   template: `
 
     <div class="flex-container-main-column element-min-height-full main-container">
       <div class="flex-element-with-border element-width-75 element-alignment-center">
         <div class="element-width-50 element-position-fixed element-width-75 element-z-index-10">
-          <app-header></app-header>
+          <app-nav-bar-component></app-nav-bar-component>
         </div>
         <div class="flex-element-with-border margin-top-5 margin-bottom-5">
           <div class="element-height-full">
@@ -16,13 +16,13 @@ import {Component} from '@angular/core';
           </div>
         </div>
         <div class="element-position-fixed element-bottom-zero element-width-75">
-          <app-music-player  [listOfTracks]="musicTracks"></app-music-player>
+          <app-music-player [listOfTracks]="musicTracks"></app-music-player>
         </div>
       </div>
     </div>
 
   `
 })
-export class AppMainLayout {
+export class AppMainLayoutComponent {
   musicTracks: Array<string> = ['assets/mission.mp3'];
 }

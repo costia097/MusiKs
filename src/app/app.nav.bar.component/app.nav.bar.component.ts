@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-nav-bar-component',
   template: `
-    
+
     <section class="element-height-full flex-section-wrapper">
       <div class="flex-container-main-row element-pixel-height-30">
         <div class="flex-element-with-border-and-width element-alignment-center text-center">
@@ -22,7 +22,7 @@ import {Router} from '@angular/router';
         </div>
         <div class="flex-container-main-row element-width-50">
           <div class="flex-element-with-border-and-width element-alignment-center text-center">
-            <a class="pointer">1</a>
+            <a class="pointer" (click)="navigateTo('/')">Main content</a>
           </div>
           <div class="flex-element-with-border-and-width element-alignment-center text-center">
             2
@@ -39,19 +39,19 @@ import {Router} from '@angular/router';
         </div>
         <div class="flex-container-main-row element-width-15 container-alignment-right">
           <div class="element-alignment-center">
-            <button class="btn" (click)="navigateToLogin()">Login</button>
+            <button class="btn" (click)="navigateTo('login')">Login</button>
           </div>
         </div>
       </div>
     </section>
   `,
-  styleUrls: ['app.header.component.css']
+  styleUrls: ['app.nav.bar.component.css']
 })
-export class AppHeaderComponent {
+export class AppNavBarComponent {
   constructor(private router: Router) {
   }
 
-  navigateToLogin() {
-    this.router.navigate(['/login'])
+  navigateTo(url:string) {
+    this.router.navigate(['/' + url]);
   }
 }

@@ -143,11 +143,18 @@ export class AppMusicPlayerComponent implements OnInit {
   }
 
   playCurrentTrack(source: string) {
+    if (this.currentTrackSource === source) {
+      if (this.isPlaying) {
+        this.audioPlayerRef.nativeElement.pause();
+      } else {
+        this.audioPlayerRef.nativeElement.play();
+      }
+      return;
+    }
     this.currentTrackSource = source;
     this.audioPlayerRef.nativeElement.load();
     this.audioPlayerRef.nativeElement.play();
     this.audioPlayerRef.nativeElement.autoplay = false;
-    this.isPlaying = true;
   }
 
   forward() {
